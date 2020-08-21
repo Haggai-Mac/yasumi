@@ -33,12 +33,12 @@ abstract class AbstractFilter extends FilterIterator implements Countable
      */
     public function count(): int
     {
-        $names = \array_map(static function (&$holiday) {
+        $names = \array_map(static function ($holiday) {
             if ($holiday instanceof SubstituteHoliday) {
-                return $holiday->substitutedHoliday->shortName;
+                return $holiday->getSubstitutedHoliday()->getKey();
             }
 
-            return $holiday->shortName;
+            return $holiday->getKey();
         }, \iterator_to_array($this));
 
         return \count(\array_unique($names));

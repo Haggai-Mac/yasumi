@@ -14,7 +14,6 @@ namespace Yasumi\Provider;
 
 use DateInterval;
 use DateTime;
-use DateTimeZone;
 use Yasumi\Exception\InvalidDateException;
 use Yasumi\Exception\UnknownLocaleException;
 use Yasumi\Holiday;
@@ -23,7 +22,6 @@ use Yasumi\Holiday;
  * Trait ChristianHolidays.
  *
  * Trait containing base Christian Western churches calendar based holidays.
- *
  */
 trait ChristianHolidays
 {
@@ -80,7 +78,6 @@ trait ChristianHolidays
      * @link https://github.com/php/php-src/blob/c8aa6f3a9a3d2c114d0c5e0c9fdd0a465dbb54a5/ext/calendar/easter.c
      * @link http://www.gmarts.org/index.php?go=415#EasterMallen
      * @link https://www.tondering.dk/claus/cal/easter.php
-     *
      */
     protected function calculateEaster(int $year, string $timezone): DateTime
     {
@@ -94,7 +91,7 @@ trait ChristianHolidays
             // 1583 AD to 4099 (A day adjustment is required in or shortly after 4100 AD).
             // After 1752, most western churches have adopted the current algorithm.
             if ($year <= 1752) {
-                $dom = ($year + (int)($year / 4) + 5) % 7; // The 'Dominical number' - finding a Sunday
+                $dom = ($year + (int) ($year / 4) + 5) % 7; // The 'Dominical number' - finding a Sunday
                 if ($dom < 0) {
                     $dom += 7;
                 }
@@ -104,13 +101,13 @@ trait ChristianHolidays
                     $pfm += 30;
                 }
             } else {
-                $dom = ($year + (int)($year / 4) - (int)($year / 100) + (int)($year / 400)) % 7; // The 'Dominical number' - finding a Sunday
+                $dom = ($year + (int) ($year / 4) - (int) ($year / 100) + (int) ($year / 400)) % 7; // The 'Dominical number' - finding a Sunday
                 if ($dom < 0) {
                     $dom += 7;
                 }
 
-                $solar = (int)(($year - 1600) / 100) - (int)(($year - 1600) / 400); // The solar correction
-                $lunar = (int)(((int)(($year - 1400) / 100) * 8) / 25); // The lunar correction
+                $solar = (int) (($year - 1600) / 100) - (int) (($year - 1600) / 400); // The solar correction
+                $lunar = (int) (((int) (($year - 1400) / 100) * 8) / 25); // The lunar correction
 
                 $pfm = (3 - (11 * $golden) + $solar - $lunar) % 30; // Uncorrected date of the Paschal full moon
                 if ($pfm < 0) {
@@ -131,7 +128,7 @@ trait ChristianHolidays
             $easterDays = $pfm + $tmp + 1; // Easter as the number of days after 21st March
         }
 
-        $easter = new DateTime("$year-3-21", new DateTimeZone($timezone));
+        $easter = new DateTime("$year-3-21", DateTimeZoneFactory::getDateTimeZone($timezone));
         $easter->add(new DateInterval('P' . $easterDays . 'D'));
 
         return $easter;
@@ -348,7 +345,7 @@ trait ChristianHolidays
         return new Holiday(
             'christmasEve',
             [],
-            new DateTime("$year-12-24", new DateTimeZone($timezone)),
+            new DateTime("$year-12-24", DateTimeZoneFactory::getDateTimeZone($timezone)),
             $locale,
             $type
         );
@@ -383,7 +380,7 @@ trait ChristianHolidays
         return new Holiday(
             'christmasDay',
             [],
-            new DateTime("$year-12-25", new DateTimeZone($timezone)),
+            new DateTime("$year-12-25", DateTimeZoneFactory::getDateTimeZone($timezone)),
             $locale,
             $type
         );
@@ -418,7 +415,7 @@ trait ChristianHolidays
         return new Holiday(
             'secondChristmasDay',
             [],
-            new DateTime("$year-12-26", new DateTimeZone($timezone)),
+            new DateTime("$year-12-26", DateTimeZoneFactory::getDateTimeZone($timezone)),
             $locale,
             $type
         );
@@ -453,7 +450,7 @@ trait ChristianHolidays
         string $locale,
         string $type = Holiday::TYPE_OFFICIAL
     ): Holiday {
-        return new Holiday('allSaintsDay', [], new DateTime("$year-11-1", new DateTimeZone($timezone)), $locale, $type);
+        return new Holiday('allSaintsDay', [], new DateTime("$year-11-1", DateTimeZoneFactory::getDateTimeZone($timezone)), $locale, $type);
     }
 
     /**
@@ -487,7 +484,7 @@ trait ChristianHolidays
         return new Holiday(
             'assumptionOfMary',
             [],
-            new DateTime("$year-8-15", new DateTimeZone($timezone)),
+            new DateTime("$year-8-15", DateTimeZoneFactory::getDateTimeZone($timezone)),
             $locale,
             $type
         );
@@ -558,7 +555,7 @@ trait ChristianHolidays
         string $locale,
         string $type = Holiday::TYPE_OFFICIAL
     ): Holiday {
-        return new Holiday('epiphany', [], new DateTime("$year-1-6", new DateTimeZone($timezone)), $locale, $type);
+        return new Holiday('epiphany', [], new DateTime("$year-1-6", DateTimeZoneFactory::getDateTimeZone($timezone)), $locale, $type);
     }
 
     /**
@@ -630,7 +627,7 @@ trait ChristianHolidays
         return new Holiday(
             'immaculateConception',
             [],
-            new DateTime("$year-12-8", new DateTimeZone($timezone)),
+            new DateTime("$year-12-8", DateTimeZoneFactory::getDateTimeZone($timezone)),
             $locale,
             $type
         );
@@ -669,7 +666,7 @@ trait ChristianHolidays
         return new Holiday(
             'stStephensDay',
             [],
-            new DateTime("$year-12-26", new DateTimeZone($timezone)),
+            new DateTime("$year-12-26", DateTimeZoneFactory::getDateTimeZone($timezone)),
             $locale,
             $type
         );
@@ -705,7 +702,7 @@ trait ChristianHolidays
         string $locale,
         string $type = Holiday::TYPE_OFFICIAL
     ): Holiday {
-        return new Holiday('stJosephsDay', [], new DateTime("$year-3-19", new DateTimeZone($timezone)), $locale, $type);
+        return new Holiday('stJosephsDay', [], new DateTime("$year-3-19", DateTimeZoneFactory::getDateTimeZone($timezone)), $locale, $type);
     }
 
     /**
@@ -775,7 +772,7 @@ trait ChristianHolidays
         string $locale,
         string $type = Holiday::TYPE_OFFICIAL
     ): Holiday {
-        return new Holiday('stGeorgesDay', [], new DateTime("$year-4-23", new DateTimeZone($timezone)), $locale, $type);
+        return new Holiday('stGeorgesDay', [], new DateTime("$year-4-23", DateTimeZoneFactory::getDateTimeZone($timezone)), $locale, $type);
     }
 
     /**
@@ -808,7 +805,7 @@ trait ChristianHolidays
         string $locale,
         string $type = Holiday::TYPE_OFFICIAL
     ): Holiday {
-        return new Holiday('stJohnsDay', [], new DateTime("$year-06-24", new DateTimeZone($timezone)), $locale, $type);
+        return new Holiday('stJohnsDay', [], new DateTime("$year-06-24", DateTimeZoneFactory::getDateTimeZone($timezone)), $locale, $type);
     }
 
     /**
@@ -844,7 +841,7 @@ trait ChristianHolidays
         return new Holiday(
             'annunciation',
             [],
-            new DateTime("$year-03-25", new DateTimeZone($timezone)),
+            new DateTime("$year-03-25", DateTimeZoneFactory::getDateTimeZone($timezone)),
             $locale,
             $type
         );
@@ -872,7 +869,7 @@ trait ChristianHolidays
         $month = \floor(($d + $e + 114) / 31);
         $day = (($d + $e + 114) % 31) + 1;
 
-        return (new DateTime("$year-$month-$day", new DateTimeZone($timezone)))->add(new DateInterval('P13D'));
+        return (new DateTime("$year-$month-$day", DateTimeZoneFactory::getDateTimeZone($timezone)))->add(new DateInterval('P13D'));
     }
 
     /**
@@ -912,7 +909,7 @@ trait ChristianHolidays
         return new Holiday(
             'reformationDay',
             [],
-            new DateTime("$year-10-31", new DateTimeZone($timezone)),
+            new DateTime("$year-10-31", DateTimeZoneFactory::getDateTimeZone($timezone)),
             $locale,
             $type
         );

@@ -14,10 +14,10 @@ namespace Yasumi\Provider\UnitedKingdom;
 
 use DateInterval;
 use DateTime;
-use DateTimeZone;
 use Yasumi\Exception\InvalidDateException;
 use Yasumi\Exception\UnknownLocaleException;
 use Yasumi\Holiday;
+use Yasumi\Provider\DateTimeZoneFactory;
 use Yasumi\Provider\UnitedKingdom;
 use Yasumi\SubstituteHoliday;
 
@@ -99,7 +99,7 @@ class Scotland extends UnitedKingdom
         $secondNewYearsDay = new Holiday(
             'secondNewYearsDay',
             [],
-            new DateTime("$this->year-1-2", new DateTimeZone($this->timezone)),
+            new DateTime("$this->year-1-2", DateTimeZoneFactory::getDateTimeZone($this->timezone)),
             $this->locale,
             $type
         );
@@ -107,7 +107,7 @@ class Scotland extends UnitedKingdom
         $this->addHoliday($newYearsDay);
         $this->addHoliday($secondNewYearsDay);
 
-        if (\in_array((int)$newYearsDay->format('w'), [0, 6], true)) {
+        if (\in_array((int) $newYearsDay->format('w'), [0, 6], true)) {
             $date = clone $newYearsDay;
             $date->add(new DateInterval('P2D'));
             $this->addHoliday(new SubstituteHoliday(
@@ -119,7 +119,7 @@ class Scotland extends UnitedKingdom
             ));
         }
 
-        if (\in_array((int)$secondNewYearsDay->format('w'), [0, 6], true)) {
+        if (\in_array((int) $secondNewYearsDay->format('w'), [0, 6], true)) {
             $date = clone $secondNewYearsDay;
             $date->add(new DateInterval('P2D'));
             $this->addHoliday(new SubstituteHoliday(
@@ -153,7 +153,7 @@ class Scotland extends UnitedKingdom
         $this->addHoliday(new Holiday(
             'summerBankHoliday',
             ['en' => 'August Bank Holiday'],
-            new DateTime("first monday of august $this->year", new DateTimeZone($this->timezone)),
+            new DateTime("first monday of august $this->year", DateTimeZoneFactory::getDateTimeZone($this->timezone)),
             $this->locale,
             Holiday::TYPE_BANK
         ));
@@ -180,7 +180,7 @@ class Scotland extends UnitedKingdom
         $holiday = new Holiday(
             'stAndrewsDay',
             [],
-            new DateTime($this->year . '-11-30', new DateTimeZone($this->timezone)),
+            new DateTime($this->year . '-11-30', DateTimeZoneFactory::getDateTimeZone($this->timezone)),
             $this->locale,
             Holiday::TYPE_BANK
         );
@@ -188,7 +188,7 @@ class Scotland extends UnitedKingdom
         $this->addHoliday($holiday);
 
         // Substitute holiday is on the next available weekday if a holiday falls on a Saturday or Sunday
-        if (\in_array((int)$holiday->format('w'), [0, 6], true)) {
+        if (\in_array((int) $holiday->format('w'), [0, 6], true)) {
             $date = clone $holiday;
             $date->modify('next monday');
 

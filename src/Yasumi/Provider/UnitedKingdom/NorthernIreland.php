@@ -13,10 +13,10 @@
 namespace Yasumi\Provider\UnitedKingdom;
 
 use DateTime;
-use DateTimeZone;
 use Yasumi\Exception\InvalidDateException;
 use Yasumi\Exception\UnknownLocaleException;
 use Yasumi\Holiday;
+use Yasumi\Provider\DateTimeZoneFactory;
 use Yasumi\Provider\UnitedKingdom;
 use Yasumi\SubstituteHoliday;
 
@@ -79,7 +79,7 @@ class NorthernIreland extends UnitedKingdom
         $holiday = new Holiday(
             'stPatricksDay',
             ['en' => 'St. Patrick’s Day'],
-            new DateTime($this->year . '-3-17', new DateTimeZone($this->timezone)),
+            new DateTime($this->year . '-3-17', DateTimeZoneFactory::getDateTimeZone($this->timezone)),
             $this->locale,
             Holiday::TYPE_BANK
         );
@@ -87,7 +87,7 @@ class NorthernIreland extends UnitedKingdom
         $this->addHoliday($holiday);
 
         // Substitute holiday is on the next available weekday if a holiday falls on a Saturday or Sunday
-        if (\in_array((int)$holiday->format('w'), [0, 6], true)) {
+        if (\in_array((int) $holiday->format('w'), [0, 6], true)) {
             $date = clone $holiday;
             $date->modify('next monday');
 
@@ -125,7 +125,7 @@ class NorthernIreland extends UnitedKingdom
         $holiday = new Holiday(
             'battleOfTheBoyne',
             ['en' => 'Battle of the Boyne'],
-            new DateTime($this->year . '-7-12', new DateTimeZone($this->timezone)),
+            new DateTime($this->year . '-7-12', DateTimeZoneFactory::getDateTimeZone($this->timezone)),
             $this->locale,
             Holiday::TYPE_BANK
         );
@@ -133,7 +133,7 @@ class NorthernIreland extends UnitedKingdom
         $this->addHoliday($holiday);
 
         // Substitute holiday is on the next available weekday if a holiday falls on a Saturday or Sunday
-        if (\in_array((int)$holiday->format('w'), [0, 6], true)) {
+        if (\in_array((int) $holiday->format('w'), [0, 6], true)) {
             $date = clone $holiday;
             $date->modify('next monday');
 
